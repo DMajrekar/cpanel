@@ -2,36 +2,10 @@ require 'rubygems'
 require 'rake'
 
 begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "cpanel"
-    gem.summary = %Q{cPanel connection wrapper for Ruby}
-    gem.description = %Q{cPanel connection wrapper for Ruby}
-    gem.email = "jdelsman@voxxit.com"
-    gem.homepage = "http://github.com/voxxit/cpanel"
-    gem.authors = ["Josh Delsman"]
-
-    gem.add_development_dependency "thoughtbot-shoulda"
-
-    gem.add_dependency "active_resource"
-    gem.add_dependency "active_support"
-  end
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
-end
-
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/*_test.rb'
-  test.verbose = true
-end
-
-begin
   require 'rcov/rcovtask'
   Rcov::RcovTask.new do |test|
-    test.libs << 'test'
-    test.pattern = 'test/**/*_test.rb'
+    test.libs << 'spec'
+    test.pattern = 'spec/**/*_spec.rb'
     test.verbose = true
   end
 rescue LoadError
@@ -39,10 +13,6 @@ rescue LoadError
     abort "RCov is not available. In order to run rcov, you must: sudo gem install spicycode-rcov"
   end
 end
-
-task :test => :check_dependencies
-
-task :default => :test
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
