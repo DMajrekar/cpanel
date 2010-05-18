@@ -5,30 +5,40 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cpanel}
+  s.summary = %q{cPanel connection wrapper for Ruby}
+  s.homepage = %q{http://github.com/dmajrekar/cpanel}
+  
   s.version = "0.1.1"
 
+  s.rubygems_version = %q{1.3.5}
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  
   s.authors = ["Josh Delsman" "Dinesh Majrekar"]
   s.date = %q{2010-05-18}
+  
   s.description = %q{cPanel connection wrapper for Ruby}
   s.email = %q{jdelsman@voxxit.com d.majrekar@gmail.com}
+  
   s.extra_rdoc_files = [
     "LICENSE",
      "README.rdoc"
   ]
-  s.files = [
+  
+  s.files = Dir.glob("{lib}/**/*") + [
     ".document",
      ".gitignore",
      "LICENSE",
      "README.rdoc",
      "Rakefile",
      "VERSION",
-     "lib/cpanel.rb",
+     'lib/cpanel.rb'
   ]
-  s.homepage = %q{http://github.com/dmajrekar/cpanel}
+  
+  
+  
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
-  s.summary = %q{cPanel connection wrapper for Ruby}
+  
+  
   s.test_files = Dir.glob("{sepc}/**/*")
 end
