@@ -1,31 +1,33 @@
-require 'active_support/json'
-
 module Cpanel
   class Response
-    attr_accessor :response, :success
+    attr_accessor :data
 
-    def initialize(response)      
-      response = ActiveSupport::JSON.decode(response)
-      
-      if response["result"]
-        @response = response["result"][0] ? response["result"][0] : response["result"]
-      else
-        @response = response
-      end
-      
-      @success = success?
+    def initialize(http_response)
+      @data = parse_response(http_response)
     end
-    
+
     def errors
-      if success?
-        nil
-      else
-        return response["statusmsg"] ? response["statusmsg"] : nil
-      end
+      return nil if success?
+      return statusmsg if statusmsg
+      return nil
     end
 
     def success?
-      return response["status"] ? response["status"] == 1 : true
+      return status == 1 if status
+      true
+    end
+
+    def [](key)
+      return data[key.to_s]
+    end
+
+    def parse_response(http_response)
+      raise "NOT YET DEFINED - this should return a hash representing the data returned"
+    end
+
+    def method_missing(method, *args, &block)
+      return data[method.to_s] if data.has_key?(method.to_s)
+      super
     end
   end
 end
