@@ -113,6 +113,47 @@ describe Cpanel::Manage2 do
     end
   end
 
+  describe "#expire_license" do
+    before(:each) do
+      @client = Cpanel::Manage2.new('username', 'password')
+
+      @response = stub("Response Object")
+      Cpanel::Response::Yaml.stubs(:new).returns(@response)
+
+      @get_response = stub("Get Response")
+      @client.stubs(:get).returns(@get_response)
+    end
+
+    it "should make a get request to '/XMLlicenseExpire.cgi'" do
+      @client.expects(:get).with(regexp_matches(/XMLlicenseExpire.cgi/)).returns(@get_response)
+      @client.expire_license('id')
+    end
+
+    it "should pass the license id in the get request" do
+      @client.expects(:get).with(regexp_matches(/liscid=id/)).returns(@get_response)
+      @client.expire_license('id')      
+    end
+
+    it "should pass the default expire code of 'normal'" do
+      @client.expects(:get).with(regexp_matches(/expcode=normal/)).returns(@get_response)
+      @client.expire_license('id')      
+    end
+
+    it "should pass the provided expire code of 'normal'" do
+      @client.expects(:get).with(regexp_matches(/expcode=exp_code/)).returns(@get_response)
+      @client.expire_license('id', 'exp_code')      
+    end
+
+    it "should create a Yaml response object" do
+      Cpanel::Response::Yaml.expects(:new).with(@get_response).returns(@response)
+      @client.expire_license('id')
+    end
+
+    it "should return the reponse object" do
+      @client.expire_license('id').should eql(@response)
+    end
+  end
+
   describe "#groups" do
     before(:each) do
       @client = Cpanel::Manage2.new('username', 'password')

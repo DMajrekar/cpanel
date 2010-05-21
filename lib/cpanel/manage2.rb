@@ -45,6 +45,11 @@ module Cpanel
       return Cpanel::Response::Yaml.new(get(get_url))
     end
 
+    
+    def expire_license(id, expcode = 'normal')
+      return Cpanel::Response::Yaml.new(get("/XMLlicenseExpire.cgi?liscid=#{id}&expcode=#{expcode}&output=yaml"))
+    end
+
     # Get the current groups from Manage2 using 'XMLgroupInfo'. Returns a Cpanel::Response. Access to the
     # groups has is through the +groups+ method on the Cpanel::Response
     #
