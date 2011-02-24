@@ -12,7 +12,7 @@ describe Cpanel::Manage2 do
       @client.password.should == 'password'
     end
   end
-  
+
   describe "#add_license" do
     before(:each) do
       @client = Cpanel::Manage2.new('username', 'password')
@@ -26,32 +26,32 @@ describe Cpanel::Manage2 do
       @get_response = stub("Get Response")
       @client.stubs(:get).returns(@get_response)
     end
-    
+
     it "should make a get request to '/XMLlicenseAdd.cgi'" do
       @client.expects(:get).with(regexp_matches(/^\/XMLlicenseAdd.cgi.*$/))
       @client.add_license('127.0.0.1')
     end
-    
+
     it "should set legal to 1" do
       @client.expects(:get).with(regexp_matches(/legal=1/))
-      @client.add_license('127.0.0.1')      
+      @client.add_license('127.0.0.1')
     end
-    
+
     it "should set force to 0" do
       @client.expects(:get).with(regexp_matches(/force=0/))
-      @client.add_license('127.0.0.1')      
+      @client.add_license('127.0.0.1')
     end
-    
+
     it "should set the ip address" do
       @client.expects(:get).with(regexp_matches(/ip=127\.0\.0\.1/))
-      @client.add_license('127.0.0.1')      
+      @client.add_license('127.0.0.1')
     end
-    
+
     it "should set the group id" do
       @client.expects(:get).with(regexp_matches(/groupid=group_id/))
-      @client.add_license('127.0.0.1')      
+      @client.add_license('127.0.0.1')
     end
-    
+
     it "should set the package id to that provided" do
       @client.expects(:get).with(regexp_matches(/groupid=new_group_id/))
       @client.add_license('127.0.0.1', {:groupid => 'new_group_id'})
@@ -61,12 +61,12 @@ describe Cpanel::Manage2 do
       @client.expects(:get).with(regexp_matches(/groupid=new_group_id/))
       @client.add_license('127.0.0.1', {'groupid' => 'new_group_id'})
     end
-    
+
     it "should set the package id" do
       @client.expects(:get).with(regexp_matches(/packageid=package_id/))
-      @client.add_license('127.0.0.1')      
+      @client.add_license('127.0.0.1')
     end
-    
+
     it "should set the package id to that provided" do
       @client.expects(:get).with(regexp_matches(/packageid=new_package_id/))
       @client.add_license('127.0.0.1', {:packageid => 'new_package_id'})
@@ -126,31 +126,36 @@ describe Cpanel::Manage2 do
 
     it "should make a get request to '/XMLlicenseExpire.cgi'" do
       @client.expects(:get).with(regexp_matches(/XMLlicenseExpire.cgi/)).returns(@get_response)
-      @client.expire_license('id')
+      @client.expire_license('id', 'reason')
     end
 
     it "should pass the license id in the get request" do
       @client.expects(:get).with(regexp_matches(/liscid=id/)).returns(@get_response)
-      @client.expire_license('id')      
+      @client.expire_license('id', 'reason')
+    end
+
+    it "should pass the reason in the get request" do
+      @client.expects(:get).with(regexp_matches(/reason=reason/)).returns(@get_response)
+      @client.expire_license('id', 'reason')
     end
 
     it "should pass the default expire code of 'normal'" do
       @client.expects(:get).with(regexp_matches(/expcode=normal/)).returns(@get_response)
-      @client.expire_license('id')      
+      @client.expire_license('id', 'reason')
     end
 
     it "should pass the provided expire code of 'normal'" do
       @client.expects(:get).with(regexp_matches(/expcode=exp_code/)).returns(@get_response)
-      @client.expire_license('id', 'exp_code')      
+      @client.expire_license('id', 'reason', 'exp_code')
     end
 
     it "should create a Yaml response object" do
       Cpanel::Response::Yaml.expects(:new).with(@get_response).returns(@response)
-      @client.expire_license('id')
+      @client.expire_license('id', 'reason')
     end
 
     it "should return the reponse object" do
-      @client.expire_license('id').should eql(@response)
+      @client.expire_license('id', 'reason').should eql(@response)
     end
   end
 
